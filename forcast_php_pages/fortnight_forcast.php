@@ -10,24 +10,24 @@ if (mysqli_connect_errno()) {
     echo "Error: Unable to connect to MySQL. " . mysqli_connect_error();
     exit; //stop processing the page further
 }
-if (isset($_POST['submit']) and !empty($_POST['submit']) and $_POST['submit']==='Fetchftexp'){
+if (isset($_POST['submit']) and !empty($_POST['submit']) and $_POST['submit']==='Fetchftexp') {
     $year = "";
     $month = "";
     $error = 0;
-    if (isset($_POST['Month_Forcast_Fortnightly']) and !empty($_POST['Month_Forcast_Fortnightly'])){
+    if (isset($_POST['Month_Forcast_Fortnightly']) and !empty($_POST['Month_Forcast_Fortnightly'])) {
         $month = $_POST['Month_Forcast_Fortnightly'];
-    }else{
+    } else {
         echo "Cant find month";
         $error++;
     }
-    if (isset($_POST['Year_Forcast_Fortnightly']) and !empty($_POST['Year_Forcast_Fortnightly'])){
+    if (isset($_POST['Year_Forcast_Fortnightly']) and !empty($_POST['Year_Forcast_Fortnightly'])) {
         $year = $_POST['Year_Forcast_Fortnightly'];
-    }else{
+    } else {
         echo "Cant find year";
         $error++;
     }
 
-    if ($error === 0){
+    if ($error === 0) {
         $query = "SELECT * FROM fortnightly WHERE fortnightmonth = '$month' AND fortnightyear = '$year'";
         $query2 = "SELECT SUM(`ft1`) FROM fortnightly WHERE fortnightmonth = '$month' AND fortnightyear = '$year'";
         $query3 = "SELECT SUM(`ft2`) FROM fortnightly WHERE fortnightmonth = '$month' AND fortnightyear = '$year'";
@@ -43,6 +43,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and $_POST['submit']===
 
     }
 }
+
 ?>
 <section id="fortnight_budget_forecast">
     <div class="container-fluid">
@@ -96,22 +97,26 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and $_POST['submit']===
         <tbody>
 
         <?php
-        if ($rowcount > 0){
+        if (isset($rowcount)) {
 
-            while ($row = mysqli_fetch_assoc($result)){
 
-                $id = $row['fornightlypaymentID'];
-                echo '<tr><td>'.$row['company'].'</td><td>'.$row['ft1'].'</td><td>'.$row['ft2'].'</td><td>'.$row['ft3'].'</td>';
-                echo     '<td><a href=".php?id=' . $id . '">[view]</a>';
-                echo         '<a href=".php?id=' . $id . '">[edit]</a>';
-                echo         '<a href=".php?id=' . $id . '">[delete]</a></td>';
+            if ($rowcount > 0) {
+
+                while ($row = mysqli_fetch_assoc($result)) {
+
+                    $id = $row['fornightlypaymentID'];
+                    echo '<tr><td>' . $row['company'] . '</td><td>' . $row['ft1'] . '</td><td>' . $row['ft2'] . '</td><td>' . $row['ft3'] . '</td>';
+                    echo '<td><a href=".php?id=' . $id . '">[view]</a>';
+                    echo '<a href=".php?id=' . $id . '">[edit]</a>';
+                    echo '<a href=".php?id=' . $id . '">[delete]</a></td>';
+                }
+                echo '</tr>';
+
+                echo '<tr><td></td><td>' . $sum[0] . '</td><td>' . $sum2[0] . '</td><td>' . $sum3[0] . '</td>';
+                echo '</tr>';
+            } else {
+                echo '<tr><td><h3>No records found for this month and year</h3></td>';
             }
-            echo '</tr>';
-
-            echo '<tr><td></td><td>'.$sum[0].'</td><td>'.$sum2[0].'</td><td>'.$sum3[0].'</td>';
-            echo '</tr>';
-        }else{
-            echo '<tr><td><h3>No records found for this month and year</h3></td>';
         }
         ?>
 
