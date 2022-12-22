@@ -1,0 +1,12 @@
+h6#clock{
+    color: aliceblue !important;
+    font-weight: 100;
+    font-size: large;
+}
+body{
+    background: grey !important;
+}
+section#fortnight_budget_forecast {
+    text-align: center;
+    font-family: emoji;
+}
