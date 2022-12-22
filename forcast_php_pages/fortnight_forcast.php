@@ -74,8 +74,32 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and $_POST['submit']===
 </section>
 <section id="Table_Fortnight_display">
     <table class="table table-striped table-responsive">
+        <thead>
+        <tr>
+            <th>Company</th>
+            <th>First payment</th>
+            <th>Second payment</th>
+            <th>Third payment</th>
+            <th>Action events</th>
+        </tr>
+        </thead>
+        <tbody>
 
+        <?php
+        if ($rowcount > 0){
+            while ($row = mysqli_fetch_assoc($result)){
+                $id = $row['fornightlypaymentID'];
+                echo '<tr><td>'.$row['company'].'</td><td>'.$row['ft1'].'</td><td>'.$row['ft2'].'</td><td>'.$row['ft3'].'</td>';
+                echo     '<td><a href=".php?id=' . $id . '">[view]</a>';
+                echo         '<a href=".php?id=' . $id . '">[edit]</a>';
+                echo         '<a href=".php?id=' . $id . '">[delete]</a></td>';
+            }
+        }else{
+            echo '<tr><td><h3>No records found for this month and year</h3></td>';
+        }
+        ?>
 
+        </tbody>
     </table>
 </section>
 
