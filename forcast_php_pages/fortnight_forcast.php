@@ -44,16 +44,128 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and $_POST['submit']===
     }
 }
 
+if (isset($_POST['submit']) and !empty($_POST['submit']) and $_POST['submit']==='addExpFortnight'){
+    $addMonth = "";
+    $addYear = "";
+    $addCompany = "";
+    $addFt1 = 0;
+    $addFt2 = 0;
+    $addFt3 = 0;
+    $addError = 0;
+
+    if (isset($_POST['addMonthExp']) and !empty($_POST['addMonthExp'])){
+        $addMonth = $_POST['addMonthExp'];
+    }else{
+        $addError++;
+    }
+    if (isset($_POST['addYear']) and !empty($_POST['addYear'])){
+        $addYear = $_POST['addYear'];
+    }else{
+        $addError++;
+    }
+    if (isset($_POST['addCompany']) and !empty($_POST['addCompany'])){
+        $addCompany =$_POST['addCompany'];
+    }else{
+        $addError++;
+    }
+    if (isset($_POST['addf1Exp']) and !empty($_POST['addf1Exp'])){
+        $addFt1 = $_POST['addf1Exp'];
+    }
+    if (isset($_POST['addf2Exp']) and !empty($_POST['addf2Exp'])){
+        $addFt2 = $_POST['addf2Exp'];
+    }
+    if (isset($_POST['addf3Exp']) and !empty($_POST['addf3Exp'])){
+        $addFt3 = $_POST['addf3Exp'];
+    }
+
+    if ($addError === 0){
+        $addQuery = "INSERT INTO fortnightly (fortnightyear, fortnightmonth, company, ft1, ft2, ft3) 
+                    VALUES ('$addYear', '$addMonth', '$addCompany', '$addFt1', '$addFt2','$addFt3' )";
+        mysqli_query($DBC, $addQuery);
+    }
+}
 ?>
+
+<section id="modal_for_add_fortnightly_expense">
+    <!-- Modal -->
+    <div class="modal fade" id="addExpModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add a fortnightly expense</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" name="addExp" method="post" class="form-control">
+                        <div class="container row">
+
+                            <label class="form-label" for="addMonthExp"><strong>Please select month: </strong></label>
+                            <select class="form-select" name="addMonthExp" id="addMonthExp">
+                                <option value="January">January</option>
+                                <option value="February">February</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
+                                <option value="May">May</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
+                            </select>
+                        </div>
+                        <div class="container row">
+                            <label class="form-label" for="Year_Forcast_Fortnightly"><strong>Please select year: </strong></label>
+                            <select class="form-select" name="addYear" id="addYear">
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="company" class="form-label">Company:</label>
+                            <input type="text" class="form-control" id="company" name="addCompany" placeholder="Enter company">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="addf1Exp" class="form-label">First fortnight:</label>
+                            <input type="number" min="1" step="any" class="form-control" name="addf1Exp" id="addf1Exp" placeholder="Pay on first fortnight">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="addf2Exp" class="form-label">Second fortnight:</label>
+                            <input type="number" min="1" step="any" class="form-control" id="addf2Exp" name="addf2Exp" placeholder="Pay on second fortnight">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="addf3Exp" class="form-label">Third fortnight:</label>
+                            <input type="number" min="1" step="any" class="form-control" id="addf3Exp" name="addf3Exp"  placeholder="Pay on third fortnight">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" name="submit" id="submit" value="addExpFortnight" class="btn btn-outline-dark btn-light">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
 <section id="fortnight_budget_forecast">
     <div class="container-fluid">
         <h1>Fortnightly budget planner</h1>
+    </div>
+    <div class="container-fluid">
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-light float-end" data-bs-toggle="modal" data-bs-target="#addExpModal">
+            Add expense to file
+        </button>
     </div>
     <div class="container text-start">
         <form method="post" name="Fortnightly_forcast_budget" >
 
             <div class="container row">
-                <button type="submit" name="submit" id="submit" value="Fetchftexp" >Fetch records</button>
+                <button type="submit" name="submit" id="submit" value="Fetchftexp" class="btn btn-outline-light" >Fetch records</button>
                 <label class="col-2" for="Month_Forcast_Fortnightly"><strong>Please select month: </strong></label>
                 <select class="col-2" name="Month_Forcast_Fortnightly" id="Month_Forcast_Fortnightly">
                     <option value="January">January</option>
@@ -82,7 +194,6 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and $_POST['submit']===
         </form>
     </div>
 </section>
-
 <section id="Table_Fortnight_display">
     <table class="table table-striped table-responsive">
         <thead>
@@ -123,6 +234,7 @@ if (isset($_POST['submit']) and !empty($_POST['submit']) and $_POST['submit']===
         </tbody>
     </table>
 </section>
+
 
 <?php
 include "../reused_PHP_files/footer.php";
